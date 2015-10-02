@@ -21,11 +21,10 @@
 	require_once("../configglobal.php");
 	$database = "if15_olivrah";
   
-  //paneme sessiooni käima, saame kasutada $_SESSION muutujaid
+  // paneme sessiooni käima, saame kasutada $_SESSION muutujaid
 	session_start();
 	
-	
-  // lisame kasutaja ab'i
+	// lisame kasutaja ab'i
 	function createUser($create_email, $password_hash){
 		// globals on muutuja kõigist php failidest mis on ühendatud
 		$mysqli = new mysqli($GLOBALS["servername"], $GLOBALS["server_username"], $GLOBALS["server_password"], $GLOBALS["database"]);
@@ -53,7 +52,7 @@
 			$_SESSION["id_from_db"] = $id_from_db;
 			$_SESSION["user_email"] = $email_from_db;
 			
-			//suunan kasutaja data.php
+			//suunan kasutaja data.php lehele
 			header("Location: data.php");
 			
 			

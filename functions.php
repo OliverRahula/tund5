@@ -1,32 +1,17 @@
- <?php
- 
- ########
- #N�ITED#
- ########
- 
- #function welcomeUser($first_name, $age){
-	##echo "Tere ".$first_name.", kelle vanus on ".$age. "<br>";
- #}
- 
- #$first_name = "Juku";
- #welcomeUser($first_name, 15);
- #$first_name = "Juhan";
- #welcomeUser($first_name, 10);
- #welcomeUser("Oliver", 5);
-  
-  #----------------------------------------------------------------------------
-  
-  
-  //lisame kasutaja andmebaasi
+<?php
+	//kõik AB'iga seonduv
+	
+	// ühenduse loomiseks kasuta
 	require_once("../configglobal.php");
 	$database = "if15_olivrah";
-  
-  // paneme sessiooni k�ima, saame kasutada $_SESSION muutujaid
+	
+	// paneme sessiooni käima, saame kasutada $_SESSION muutujaid
 	session_start();
+
 	
 	// lisame kasutaja ab'i
 	function createUser($create_email, $password_hash){
-		// globals on muutuja k�igist php failidest mis on �hendatud
+		// globals on muutuja kõigist php failidest mis on ühendatud
 		$mysqli = new mysqli($GLOBALS["servername"], $GLOBALS["server_username"], $GLOBALS["server_password"], $GLOBALS["database"]);
 		
 		$stmt = $mysqli->prepare("INSERT INTO user_sample (email, password) VALUES (?, ?)");
@@ -63,5 +48,51 @@
 		
 		$mysqli->close();
 	}
+	
+	
+	function createCarPlate($car_plate, $color){
+		// globals on muutuja kõigist php failidest mis on ühendatud
+		$mysqli = new mysqli($GLOBALS["servername"], $GLOBALS["server_username"], $GLOBALS["server_password"], $GLOBALS["database"]);
+		
+		$stmt = $mysqli->prepare("INSERT INTO car_plates (user_id, number_plate, color) VALUES (?, ?, ?)");
+		$stmt->bind_param("iss", $_SESSION["id_from_db"], $car_plate, $color);
+		
+		$message = "";
+		
+		if($stmt->execute()){
+			// see on tõene siis kui sisestus ab'i õnnestus
+			$message = "Edukalt sisestatud andmebaasi";
+			
+		}else{
+			// execute on false, miski läks katki
+			echo $stmt->error;
+		}
+		
+		$stmt->close();
+		$mysqli->close();
+
+		return $message;
+		
+	}
+	
+	
+	/*
+	// return sample
+	
+	function welcome($name){
+		$string = "Tere ".$name;
+		return $string;
+		
+		// mis on pärast returni seda ei käivitata
+		echo "hellooooo";
+		
+	}
+	
+	$str = welcome("Romil");
+	
+	echo $str;
+	
+	*/
+	
 	
 ?>
